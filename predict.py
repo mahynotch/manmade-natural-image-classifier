@@ -4,7 +4,7 @@ from PIL import Image
 from model import ManNatClassifier
 import os
 
-DIR = "./crawler_output/Natural pictures/"
+DIR = "./crawler_output/My Little Pony/"
 transform = transforms.Compose(
     [transforms.Resize((256, 256)), 
      transforms.ToTensor(),
