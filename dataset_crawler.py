@@ -2,9 +2,8 @@ import requests as re
 from bs4 import BeautifulSoup
 import os
 import lxml
-from loguru import logger
 
-KEYLIST = ["Rhino", "Natural pictures", "China photography"]
+KEYLIST = ["aeroplane"]
 
 
 def getpage(url) -> BeautifulSoup:
@@ -35,6 +34,6 @@ if __name__ == "__main__":
         img_set = get_img_set(KEY)
         for i in range(len(img_set)):
             os.makedirs(f"./crawler_output/{KEY}/", exist_ok=True)
-            with open(f"./crawler_output/{KEY}/pic_{i}.jpg", "wb") as file:
+            with open(f"./crawler_output/{KEY}/crawlerout_{KEY}_{i}.jpg", "wb") as file:
                 file.write(img_set[i])
 

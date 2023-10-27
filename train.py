@@ -10,7 +10,7 @@ import time
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 transform = transforms.Compose(
-    [transforms.Resize([256, 256]),
+    [transforms.Resize([512, 512]),
     transforms.ToTensor(),
     transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
 
@@ -40,17 +40,14 @@ if __name__ == "__main__":
     net.to(device)
     loss_function = nn.CrossEntropyLoss() 
     optimizer = optim.Adam(net.parameters(), lr=0.001)  
-    for epoch in range(5): 
+    for epoch in range(10): 
         running_loss = 0.0
         time_start = time.perf_counter()   
         for step, data in enumerate(train_loader, start=0):  
             inputs, labels = data 
             optimizer.zero_grad()  
-            print(inputs.shape)
             # forward + backward + optimize
             outputs = net(inputs.to(device))  	
-            print(outputs.shape)
-            print(labels.shape)
             loss = loss_function(outputs, labels.to(device)) 
             loss.backward()
             optimizer.step() 
@@ -70,6 +67,6 @@ if __name__ == "__main__":
     print('Finished Training')
 
     # 保存训练得到的参数
-    save_path = './parameter/FirstAttempt.pth'
+    save_path = './parameter/SecondAttempt.pth'
     torch.save(net.state_dict(), save_path)
     
