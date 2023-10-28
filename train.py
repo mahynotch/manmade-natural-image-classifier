@@ -39,7 +39,7 @@ if __name__ == "__main__":
     net = ManNatClassifier()		
     net.to(device)
     loss_function = nn.CrossEntropyLoss() 
-    optimizer = optim.Adam(net.parameters(), lr=0.001)  
+    optimizer = optim.Adam(net.parameters(), lr=0.001, amsgrad=True)  
     for epoch in range(10): 
         running_loss = 0.0
         time_start = time.perf_counter()   
@@ -57,7 +57,6 @@ if __name__ == "__main__":
                     outputs = net(test_image.to(device)) 
                     predict_y = torch.max(outputs, dim=1)[1]
                     accuracy = (predict_y == test_label.to(device)).sum().item() / test_label.size(0)
-                    
                     print('[%d, %5d] train_loss: %.3f  test_accuracy: %.3f' %
                         (epoch + 1, step + 1, running_loss / 500, accuracy))
                     
@@ -67,6 +66,6 @@ if __name__ == "__main__":
     print('Finished Training')
 
     # 保存训练得到的参数
-    save_path = './parameter/SecondAttempt.pth'
+    save_path = './parameter/ThirdAttempt(ASGD).pth'
     torch.save(net.state_dict(), save_path)
     
