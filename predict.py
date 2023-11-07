@@ -4,13 +4,14 @@ from PIL import Image
 from model import ManNatClassifier
 import os
 
-DIR = "./crawler_output/Statue of liberty"
+DIR = "./test/manmade_test"
+# DIR = "./crawler_output/manmade"
 transform = transforms.Compose(
     [transforms.Resize((512, 512)), 
      transforms.ToTensor(),
      transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
 net = ManNatClassifier()
-net.load_state_dict(torch.load("./parameter/ThirdAttempt(ASGD).pth"))
+net.load_state_dict(torch.load("./parameter/FifthAttempt.pth"))
 classes = ("manmade", "natural")
 files = os.listdir(DIR)
 man_cnt = 0

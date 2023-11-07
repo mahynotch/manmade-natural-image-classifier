@@ -52,7 +52,7 @@ if __name__ == "__main__":
             loss.backward()
             optimizer.step() 
             running_loss += loss.item()
-            if step % 20 == 19:
+            if step % 76 == 75:
                 with torch.no_grad(): 
                     outputs = net(test_image.to(device)) 
                     predict_y = torch.max(outputs, dim=1)[1]
@@ -66,6 +66,6 @@ if __name__ == "__main__":
     print('Finished Training')
 
     # 保存训练得到的参数
-    save_path = './parameter/ThirdAttempt(ASGD).pth'
+    save_path = './parameter/FifthAttempt.pth'
     torch.save(net.state_dict(), save_path)
     
