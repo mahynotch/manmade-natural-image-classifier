@@ -13,10 +13,7 @@ import pandas as pd
 
 torch.seed = 42
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-transform = transforms.Compose(
-    [transforms.Resize([512, 512]),
-    transforms.ToTensor(),
-    transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
+transform = models.ResNet50_Weights.IMAGENET1K_V2.transforms()
 
 
 if __name__ == "__main__":
@@ -46,6 +43,7 @@ if __name__ == "__main__":
 		shuffle=False,
         num_workers=0)
     batch_num = len(train_set) // batchsize
+    print(f"batch_num: {batch_num}, len(train_set): {len(train_set)}")
     test_data_iter = iter(test_loader)
     test_image, test_label = next(test_data_iter)
     models.resnet50()
@@ -90,7 +88,6 @@ if __name__ == "__main__":
     plt.savefig(f"./result/{timestamp}-eval-acc.png")
     pd.DataFrame({"epoch":range(1, epoch_size + 1), "train_loss":loss_list, "accuracy_list":accuracy_list}).to_csv(f"./result/{timestamp}-train-loss.csv")
 
-    # 保存训练得到的参数
     save_path = f'./parameter/pretrain-{timestamp}.pth'
     print(f"Parameter save path: {save_path}")
     torch.save(net.state_dict(), save_path)

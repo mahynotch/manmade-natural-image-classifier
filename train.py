@@ -12,16 +12,16 @@ import pandas as pd
 torch.seed = 42
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 transform = transforms.Compose(
-    [transforms.Resize([512, 512]),
+    [transforms.Resize([128, 128]),
     transforms.ToTensor(),
-    transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
+    transforms.Normalize([0.46629176, 0.46785083, 0.46707144], [0.26165548, 0.2573791, 0.28735372])])
 
 
 if __name__ == "__main__":
     timestamp = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-    epoch_size = 20
+    epoch_size = 35
     batch_size = 50
-    lr = 3e-4
+    lr = 0.001
     print(f"Timestamp: {timestamp}, epoch_size: {epoch_size}, batch_size: {batch_size}, lr: {lr}, seed: {torch.seed}")
     loss_list = []
     accuracy_list = []
@@ -40,10 +40,11 @@ if __name__ == "__main__":
         transform=transform,
     )
     test_loader = torch.utils.data.DataLoader(test_set, 
-		batch_size=100,
+		batch_size=500,
 		shuffle=False,
         num_workers=0)
     batch_num = len(train_set) // batch_size
+    print(f"batch_num: {batch_num}, len(train_set): {len(train_set)}")
     test_data_iter = iter(test_loader)
     test_image, test_label = next(test_data_iter)
     net = ManNatClassifier()		
@@ -85,7 +86,6 @@ if __name__ == "__main__":
     plt.savefig(f"./result/{timestamp}-eval-acc(nopre).png")
     pd.DataFrame({"epoch":range(1, epoch_size + 1), "train_loss":loss_list, "accuracy_list":accuracy_list}).to_csv(f"./result/{timestamp}-train-loss(nopre).csv")
 
-    # 保存训练得到的参数
     save_path = f'./parameter/train-{timestamp}.pth'
     print(f"Parameter save path: {save_path}")
     torch.save(net.state_dict(), save_path)

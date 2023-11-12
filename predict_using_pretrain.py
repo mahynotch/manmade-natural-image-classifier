@@ -8,14 +8,13 @@ import torch.nn as nn
 import time
 
 DIR = "./test/manmade_test"
-print(f"Timestamp: {time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())}, DIR: {DIR}")
+print(f"Timestamp: {time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())}, DIR: {DIR}, pretrained: {True}")
 # DIR = "./crawler_output/manmade"
-transform = transforms.Compose(
-    [transforms.Resize((512, 512)), 
-     transforms.ToTensor(),
-     transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
+transform = models.ResNet50_Weights.IMAGENET1K_V2.transforms()
 net = models.resnet.ResNet(models.resnet.Bottleneck, [3, 4, 6, 3], 2)
-net.load_state_dict(torch.load("./parameter/TenthAttempt.pth"))
+Para = "parameter/pretrain-2023-11-12 02:40:40.pth"
+net.load_state_dict(torch.load(Para))
+print(f"Using: {Para}")
 net.eval()
 start = time.perf_counter()
 classes = ("manmade", "natural")
@@ -39,4 +38,5 @@ for i in files:
         nat_set.append(i)
 print(f"manmade: {man_cnt}, natural: {nat_cnt}")
 print(f"Time: {time.perf_counter()-start}")
-print(f"Anomaly: {man_set if man_cnt < nat_cnt else nat_set}, Accuracy: {man_cnt/(man_cnt+nat_cnt) if man_cnt > nat_cnt else nat_cnt/(man_cnt+nat_cnt)}")
+print(f"anomaly: {man_set if man_cnt < nat_cnt else nat_set}")
+print(f"accuracy: {man_cnt/(man_cnt+nat_cnt) if man_cnt > nat_cnt else nat_cnt/(man_cnt+nat_cnt)}")

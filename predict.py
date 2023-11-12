@@ -5,14 +5,17 @@ from model import ManNatClassifier
 import os
 import time
 
-DIR = "./test/natural_test"
-print(f"Timestamp: {time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())}, DIR: {DIR}")
+DIR = "./test/manmade_test"
+torch.seed = 42
+print(f"Timestamp: {time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())}, DIR: {DIR}, pretrained: {False}")
 transform = transforms.Compose(
-    [transforms.Resize((512, 512)), 
+    [transforms.Resize((128, 128)), 
      transforms.ToTensor(),
-     transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
+     transforms.Normalize([0.46629176, 0.46785083, 0.46707144], [0.26165548, 0.2573791, 0.28735372])])
 net = ManNatClassifier()
-net.load_state_dict(torch.load("./parameter/SixthAttempt.pth"))
+Para = "parameter/train-2023-11-12 02:13:42.pth"
+net.load_state_dict(torch.load(Para))
+print(f"Using: {Para}")
 net.eval()
 start = time.perf_counter()
 classes = ("manmade", "natural")
@@ -36,4 +39,5 @@ for i in files:
         nat_set.append(i)
 print(f"manmade: {man_cnt}, natural: {nat_cnt}")
 print(f"Time: {time.perf_counter()-start}")
-print(f"anomaly: {man_set if man_cnt < nat_cnt else nat_set}, accuracy: {man_cnt/(man_cnt+nat_cnt) if man_cnt > nat_cnt else nat_cnt/(man_cnt+nat_cnt)}")
+print(f"anomaly: {man_set if man_cnt < nat_cnt else nat_set}")
+print(f"accuracy: {man_cnt/(man_cnt+nat_cnt) if man_cnt > nat_cnt else nat_cnt/(man_cnt+nat_cnt)}")
