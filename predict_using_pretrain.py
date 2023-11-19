@@ -7,12 +7,12 @@ from torchvision import models
 import torch.nn as nn
 import time
 
-DIR = "./test/manmade_test"
-print(f"Timestamp: {time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())}, DIR: {DIR}, pretrained: {True}")
+DIR = "./test/natural_test"
+print(f"Timestamp: {time.strftime('%Y-%m-%d %H_%M_%S', time.localtime())}, DIR: {DIR}, pretrained: {True}")
 # DIR = "./crawler_output/manmade"
 transform = models.ResNet50_Weights.IMAGENET1K_V2.transforms()
 net = models.resnet.ResNet(models.resnet.Bottleneck, [3, 4, 6, 3], 2)
-Para = "parameter/pretrain-2023-11-12 02:40:40.pth"
+Para = "parameter\pretrain-2023-11-12 16_34_42.pth"
 net.load_state_dict(torch.load(Para))
 print(f"Using: {Para}")
 net.eval()

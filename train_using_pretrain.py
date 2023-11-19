@@ -18,7 +18,7 @@ transform = models.ResNet50_Weights.IMAGENET1K_V2.transforms()
 
 if __name__ == "__main__":
     timestamp = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-    epoch_size = 20
+    epoch_size = 10
     batchsize = 50
     lr = 3e-4
     print(f"Timestamp: {timestamp}, epoch_size: {epoch_size}, batchsize: {batchsize}, lr: {lr}, seed: {torch.seed}")

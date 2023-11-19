@@ -13,7 +13,7 @@ transform = transforms.Compose(
      transforms.ToTensor(),
      transforms.Normalize([0.46629176, 0.46785083, 0.46707144], [0.26165548, 0.2573791, 0.28735372])])
 net = ManNatClassifier()
-Para = "parameter/train-2023-11-12 02:13:42.pth"
+Para = "parameter/train-2023-11-12 02_13_42.pth"
 net.load_state_dict(torch.load(Para))
 print(f"Using: {Para}")
 net.eval()

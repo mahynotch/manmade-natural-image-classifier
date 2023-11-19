@@ -12,9 +12,9 @@ import pandas as pd
 torch.seed = 42
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 transform = transforms.Compose(
-    [transforms.Resize([256, 256]),
-    transforms.ToTensor(),
-    transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
+    [transforms.Resize((128, 128)), 
+     transforms.ToTensor(),
+     transforms.Normalize([0.46629176, 0.46785083, 0.46707144], [0.26165548, 0.2573791, 0.28735372])])
 
 
 if __name__ == "__main__":
@@ -23,7 +23,7 @@ if __name__ == "__main__":
     batch_size = 50
     lr = 3e-4
     print(f"Timestamp: {timestamp}, epoch_size: {epoch_size}, batch_size: {batch_size}, lr: {lr}, seed: {torch.seed}")
-    print(f"device: {device}, imagesize: 256*256")
+    print(f"device: {device}, imagesize: 256*256, type: train_test")
     loss_list = []
     accuracy_list = []
     train_set = torchvision.datasets.ImageFolder(
@@ -81,13 +81,13 @@ if __name__ == "__main__":
     print('Finished Training')
     print(f"Training time: {time.perf_counter() - init}")                
     plt.plot(range(1, epoch_size + 1), loss_list, label="train_loss")
-    plt.savefig(f"./result/{timestamp}-train-loss(nopre).png")
+    plt.savefig(f"./result/{timestamp}-train-loss(test).png")
     plt.cla()
     plt.plot(range(1, epoch_size + 1), accuracy_list, label="eval_accuracy")
-    plt.savefig(f"./result/{timestamp}-eval-acc(nopre).png")
+    plt.savefig(f"./result/{timestamp}-eval-acc(test).png")
     pd.DataFrame({"epoch":range(1, epoch_size + 1), "train_loss":loss_list, "accuracy_list":accuracy_list}).to_csv(f"./result/{timestamp}-train-loss(nopre).csv")
 
-    save_path = f'./parameter/train-{timestamp}.pth'
+    save_path = f'./parameter/train_test-{timestamp}.pth'
     print(f"Parameter save path: {save_path}")
     torch.save(net.state_dict(), save_path)
     

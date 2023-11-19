@@ -18,8 +18,8 @@ transform = transforms.Compose(
 
 
 if __name__ == "__main__":
-    timestamp = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-    epoch_size = 35
+    timestamp = time.strftime("%Y-%m-%d %H_%M_%S", time.localtime())
+    epoch_size = 50
     batch_size = 50
     lr = 0.001
     print(f"Timestamp: {timestamp}, epoch_size: {epoch_size}, batch_size: {batch_size}, lr: {lr}, seed: {torch.seed}")
